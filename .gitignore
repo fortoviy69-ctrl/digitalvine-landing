@@ -1,0 +1,8 @@
+node_modules/
+package.json
+package-lock.json
+verify.mjs
+verify-*.png
+about-*.png
+.claude/
+PLAN.md
