@@ -334,17 +334,41 @@
     }
     .abt-photo { position: relative; }
     .photo-box {
-      width: 100%; aspect-ratio: 3/4;
+      width: 100%; aspect-ratio: 4/5;
       background: linear-gradient(135deg,#1a1030,#0f1924);
       border-radius: 24px; border: 1px solid var(--bord);
+      position: relative; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
-      font-size: 96px; position: relative; overflow: hidden;
     }
-    .photo-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 22px; display: block; }
+    .photo-box img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      border-radius: 22px; display: block;
+    }
     .photo-box::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(circle at 50% 30%,rgba(123,47,190,.28) 0%,transparent 60%);
+      content: ''; position: absolute; inset: 0; z-index: 1;
+      background: radial-gradient(circle at 50% 20%,rgba(123,47,190,.22) 0%,transparent 60%);
+      pointer-events: none;
     }
+    .photo-ph {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 18px; padding: 40px 24px; z-index: 1;
+    }
+    .ph-av {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg,var(--acc),var(--acc-l));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk',sans-serif;
+      font-size: 30px; font-weight: 800; color: #fff;
+      box-shadow: 0 8px 28px rgba(123,47,190,.45);
+    }
+    .ph-name {
+      font-family: 'Space Grotesk',sans-serif;
+      font-size: clamp(18px, 2.2vw, 26px); font-weight: 700;
+      color: var(--txt); text-align: center; line-height: 1.25;
+    }
+    .ph-brand { font-size: 13px; color: var(--grn); font-weight: 600; letter-spacing: .08em; }
     .photo-card {
       position: absolute; bottom: -18px; right: -18px;
       background: linear-gradient(135deg,var(--acc),var(--acc-l));
@@ -529,7 +553,8 @@
       .prc-g { grid-template-columns: repeat(3,1fr); gap: 20px; }
       .prc-g::before { display: none; }
       .abt-in { grid-template-columns: 1fr; gap: 40px; }
-      .photo-box { aspect-ratio: 16/9; font-size: 72px; }
+      .photo-box { aspect-ratio: 16/9; }
+      .photo-card { bottom: -10px; right: -10px; }
     }
     @media(max-width:768px){
       .nav-ul,.btn.nav-btn { display: none; }
@@ -791,7 +816,16 @@
   <div class="wrap">
     <div class="abt-in">
       <div class="abt-photo a">
-        <div class="photo-box"><img src="photo.png" alt="Светлана Лоза — DigitalVine"></div>
+        <div class="photo-box">
+          <img src="photo.png" alt="Светлана Лоза"
+               onload="this.nextElementSibling.style.display='none'"
+               onerror="this.style.display='none'">
+          <div class="photo-ph">
+            <div class="ph-av">СЛ</div>
+            <div class="ph-name">Светлана Лоза</div>
+            <div class="ph-brand">DigitalVine</div>
+          </div>
+        </div>
         <div class="photo-card">
           <strong>🌿</strong>
           <span>DigitalVine</span>
