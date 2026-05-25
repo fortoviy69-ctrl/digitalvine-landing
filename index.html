@@ -356,13 +356,22 @@
       justify-content: center; gap: 18px; padding: 40px 24px; z-index: 1;
     }
     .ph-av {
-      width: 90px; height: 90px; border-radius: 50%;
+      width: 148px; height: 148px; border-radius: 50%;
       background: linear-gradient(135deg,var(--acc),var(--acc-l));
       display: flex; align-items: center; justify-content: center;
       font-family: 'Space Grotesk',sans-serif;
-      font-size: 30px; font-weight: 800; color: #fff;
-      box-shadow: 0 8px 28px rgba(123,47,190,.45);
+      font-size: 36px; font-weight: 800; color: #fff;
+      box-shadow: 0 8px 32px rgba(123,47,190,.5);
+      overflow: hidden; position: relative; flex-shrink: 0;
+      border: 3px solid rgba(157,78,221,.4);
     }
+    .ph-av img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+      border-radius: 50%;
+    }
+    .ph-av.has-photo .ph-init { display: none; }
     .ph-name {
       font-family: 'Space Grotesk',sans-serif;
       font-size: clamp(18px, 2.2vw, 26px); font-weight: 700;
@@ -821,7 +830,12 @@
                onload="this.nextElementSibling.style.display='none'"
                onerror="this.style.display='none'">
           <div class="photo-ph">
-            <div class="ph-av">СЛ</div>
+            <div class="ph-av" id="phAv">
+              <img src="photo.png" alt="Светлана Лоза"
+                   onload="this.parentElement.classList.add('has-photo')"
+                   onerror="this.style.display='none'">
+              <span class="ph-init">СЛ</span>
+            </div>
             <div class="ph-name">Светлана Лоза</div>
             <div class="ph-brand">DigitalVine</div>
           </div>
