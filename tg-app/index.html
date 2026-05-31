@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <!-- viewport-fit=cover — для корректного отображения на iPhone с чёлкой -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>DigitalVine — Заявка</title>
+
+  <!-- Telegram Mini App SDK — обязательный первый скрипт -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ==============================
+       ЭКРАН 1: ПРИВЕТСТВИЕ
+       ============================== -->
+  <div class="screen active" id="screen-welcome">
+    <div class="screen-scroll">
+      <div class="screen-content">
+
+        <!-- Аватар + бейдж бренда -->
+        <div class="welcome-hero">
+          <div class="avatar" id="avatar">
+            <img
+              src="../photo1.png"
+              alt="Светлана Лоза"
+              onload="this.parentElement.classList.add('avatar--loaded')"
+              onerror="this.style.display='none'"
+            >
+            <span class="avatar__initials">СЛ</span>
+          </div>
+          <span class="brand-badge">🌿 DigitalVine</span>
+        </div>
+
+        <!-- Приветственный текст -->
+        <div class="welcome-text">
+          <h1 class="welcome-title">
+            Привет, <span id="user-name">друг</span>! 👋
+          </h1>
+          <p class="welcome-subtitle">
+            Помогаю предпринимателям избавиться от рутины:
+            боты, мини-приложения, автоматизация и сайты.
+          </p>
+        </div>
+
+        <!-- Три преимущества -->
+        <div class="features">
+          <div class="feature">
+            <span class="feature__icon">⚡</span>
+            <span>Результат за 5–14 дней</span>
+          </div>
+          <div class="feature">
+            <span class="feature__icon">💬</span>
+            <span>Отвечаю в течение 2 часов</span>
+          </div>
+          <div class="feature">
+            <span class="feature__icon">🎁</span>
+            <span>Первая консультация бесплатно</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Кнопка-заглушка: показывается только если нет Telegram MainButton -->
+    <div class="bottom-bar" id="fallback-welcome" style="display:none">
+      <button class="btn-primary" onclick="App.goTo('task')">Начать →</button>
+    </div>
+  </div>
+
+
+  <!-- ==============================
+       ЭКРАН 2: ЗАДАЧА
+       ============================== -->
+  <div class="screen" id="screen-task">
+    <div class="screen-scroll">
+
+      <!-- Прогресс -->
+      <div class="progress-bar">
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 50%"></div>
+        </div>
+        <span class="progress-label">Шаг 1 из 2</span>
+      </div>
+
+      <div class="screen-content">
+        <h2 class="screen-title">Что нужно сделать?</h2>
+        <p class="screen-hint">Выбери тип или напиши своими словами</p>
+
+        <!-- Чипы быстрого выбора -->
+        <div class="chips" id="chips">
+          <button class="chip" data-value="Хочу Telegram-бота: автоответы, приём заявок, запись клиентов 24/7">
+            🤖<span>Telegram-бот</span>
+          </button>
+          <button class="chip" data-value="Нужно мини-приложение в Telegram: каталог, запись или личный кабинет клиента">
+            📱<span>Мини-приложение</span>
+          </button>
+          <button class="chip" data-value="Хочу автоматизировать рутину: связать CRM, таблицы и мессенджеры">
+            ⚙️<span>Автоматизация</span>
+          </button>
+          <button class="chip" data-value="Нужен сайт или лендинг, который приносит заявки от новых клиентов">
+            🌐<span>Сайт / Лендинг</span>
+          </button>
+        </div>
+
+        <!-- Поле для ввода задачи -->
+        <textarea
+          id="task-input"
+          class="textarea"
+          placeholder="Например: у меня салон красоты, хочу бота для записи клиентов. Сейчас всё вручную через Telegram."
+          maxlength="500"
+        ></textarea>
+        <div class="char-counter">
+          <span id="char-count">0</span>/500
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar" id="fallback-task" style="display:none">
+      <button class="btn-primary" id="fallback-task-btn" onclick="App.nextFromTask()">Далее →</button>
+    </div>
+  </div>
+
+
+  <!-- ==============================
+       ЭКРАН 3: КОНТАКТ
+       ============================== -->
+  <div class="screen" id="screen-contact">
+    <div class="screen-scroll">
+
+      <!-- Прогресс -->
+      <div class="progress-bar">
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 100%"></div>
+        </div>
+        <span class="progress-label">Шаг 2 из 2</span>
+      </div>
+
+      <div class="screen-content">
+        <h2 class="screen-title">Как с тобой связаться?</h2>
+        <p class="screen-hint">Только для ответа на заявку</p>
+
+        <div class="form-group">
+          <label class="form-label" for="name-input">Имя</label>
+          <input
+            type="text"
+            id="name-input"
+            class="input"
+            placeholder="Ваше имя"
+            autocomplete="given-name"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="contact-input">Telegram или телефон</label>
+          <input
+            type="text"
+            id="contact-input"
+            class="input"
+            placeholder="@username или +7 900 000 00 00"
+          >
+        </div>
+
+        <!-- Строка доверия -->
+        <div class="privacy-note">
+          🔒 Никакого спама — только ответ на вашу заявку
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-bar" id="fallback-contact" style="display:none">
+      <button class="btn-primary" onclick="App.submitForm()">Отправить заявку</button>
+    </div>
+  </div>
+
+
+  <!-- ==============================
+       ЭКРАН 4: УСПЕХ
+       ============================== -->
+  <div class="screen" id="screen-success">
+    <div class="screen-scroll">
+      <div class="screen-content screen-content--center">
+
+        <!-- Анимированная галочка -->
+        <div class="success-circle" id="success-circle">
+          <svg class="success-check" viewBox="0 0 52 52">
+            <circle class="success-check__ring" cx="26" cy="26" r="24" fill="none"/>
+            <path class="success-check__mark" fill="none" d="M14 27 l8 8 16-16"/>
+          </svg>
+        </div>
+
+        <h2 class="success-title">Заявка отправлена!</h2>
+        <p class="success-subtitle">
+          Светлана ответит в течение<br>
+          <strong>2 часов</strong> в этом чате
+        </p>
+
+        <!-- Шаги что будет дальше -->
+        <div class="next-steps">
+          <div class="next-step">
+            <span class="next-step__num">1</span>
+            <span>Получишь сообщение с уточняющими вопросами</span>
+          </div>
+          <div class="next-step">
+            <span class="next-step__num">2</span>
+            <span>Договоримся о бесплатном созвоне на 30 минут</span>
+          </div>
+          <div class="next-step">
+            <span class="next-step__num">3</span>
+            <span>Получишь предложение и стоимость под твою задачу</span>
+          </div>
+        </div>
+
+        <button class="btn-close" id="btn-close">Закрыть</button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script src="app.js"></script>
+</body>
+</html>
