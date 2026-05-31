@@ -8,6 +8,9 @@
 
 'use strict';
 
+// Замени на username своего бота (без @)
+const BOT_USERNAME = 'YOUR_BOT_USERNAME';
+
 // --- Инициализация Telegram SDK ---
 const tg = window.Telegram?.WebApp ?? null;
 
@@ -448,7 +451,54 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // 7. Оффер-модалка (один раз при первом открытии)
+  initOffer();
+
 });
+
+
+// ============================================================
+// ОФФЕР-МОДАЛКА — показываем один раз при первом открытии
+// ============================================================
+
+function initOffer() {
+  const OFFER_KEY = 'dv_offer_shown';
+  if (localStorage.getItem(OFFER_KEY)) return;
+
+  const overlay = document.getElementById('offer-overlay');
+  const ctaBtn  = document.getElementById('btn-offer-cta');
+  const skipBtn = document.getElementById('btn-offer-skip');
+  if (!overlay) return;
+
+  // Подставляем ссылку на бота
+  if (ctaBtn) {
+    ctaBtn.href = `https://t.me/${BOT_USERNAME}?start=from_app`;
+    ctaBtn.target = '_blank';
+    ctaBtn.rel = 'noopener noreferrer';
+  }
+
+  // Показываем с задержкой 800мс — экран успел появиться
+  setTimeout(() => overlay.classList.add('visible'), 800);
+
+  function closeOffer() {
+    overlay.classList.remove('visible');
+    localStorage.setItem(OFFER_KEY, '1');
+  }
+
+  skipBtn?.addEventListener('click', closeOffer);
+
+  ctaBtn?.addEventListener('click', () => {
+    closeOffer();
+    if (isInTelegram && tg?.HapticFeedback) {
+      tg.HapticFeedback.impactOccurred('medium');
+    }
+  });
+
+  // Закрытие по тапу на тёмный фон
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeOffer();
+  });
+}
 
 
 // ============================================================
