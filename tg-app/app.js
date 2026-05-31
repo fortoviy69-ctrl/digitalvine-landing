@@ -11,8 +11,12 @@
 // --- Инициализация Telegram SDK ---
 const tg = window.Telegram?.WebApp ?? null;
 
+// Настоящий контекст Telegram: initData не пустая строка
+// В браузере SDK грузится, но initData == '' → мы НЕ в Telegram
+const isInTelegram = !!(tg?.initData && tg.initData.length > 0);
+
 // Сообщаем Telegram что приложение готово (убирает белый экран)
-if (tg) {
+if (isInTelegram) {
   tg.ready();
   tg.expand(); // Раскрыть на весь экран
 }
@@ -120,7 +124,7 @@ function goBack() {
  * Обновляем MainButton под текущий экран.
  */
 function updateMainButton(screenId) {
-  if (!tg?.MainButton) return;
+  if (!isInTelegram || !tg?.MainButton) return;
 
   switch (screenId) {
     case 'welcome':
@@ -154,7 +158,7 @@ function updateMainButton(screenId) {
  * Показываем/скрываем нативную кнопку «назад» в шапке Telegram.
  */
 function updateBackButton(screenId) {
-  if (!tg?.BackButton) return;
+  if (!isInTelegram || !tg?.BackButton) return;
 
   if (screenId === 'task' || screenId === 'contact') {
     tg.BackButton.show();
@@ -167,7 +171,7 @@ function updateBackButton(screenId) {
  * Управление кнопками-заглушками (видны только вне Telegram).
  */
 function updateFallbackButtons(screenId) {
-  if (tg?.MainButton) return; // в Telegram заглушки скрыты
+  if (isInTelegram) return; // в Telegram заглушки скрыты
 
   document.querySelectorAll('[id^="fallback-"]').forEach(el => {
     el.style.display = 'none';
@@ -191,7 +195,7 @@ function updateFallbackButtons(screenId) {
 // ОБРАБОТЧИКИ СОБЫТИЙ TELEGRAM
 // ============================================================
 
-if (tg?.MainButton) {
+if (isInTelegram && tg?.MainButton) {
   tg.MainButton.onClick(() => {
     switch (state.currentScreen) {
       case 'welcome':
@@ -207,7 +211,7 @@ if (tg?.MainButton) {
   });
 }
 
-if (tg?.BackButton) {
+if (isInTelegram && tg?.BackButton) {
   tg.BackButton.onClick(() => goBack());
 }
 
@@ -278,9 +282,9 @@ function submitForm() {
     : '—';
 
   // Показываем индикатор загрузки
-  if (tg?.MainButton) {
+  if (isInTelegram && tg?.MainButton) {
     tg.MainButton.setText('Отправляем...');
-    tg.MainButton.showProgress(false); // false = не скрывать текст
+    tg.MainButton.showProgress(false);
     tg.MainButton.disable();
   }
 
@@ -303,7 +307,7 @@ function sendApplication() {
     source:           'mini_app_digitalvine'
   });
 
-  if (tg?.sendData) {
+  if (isInTelegram && tg?.sendData) {
     // Отправка в Telegram-бот без HTTP-сервера
     tg.sendData(payload);
   } else {
@@ -312,7 +316,7 @@ function sendApplication() {
   }
 
   // Вибрация успеха
-  if (tg?.HapticFeedback) {
+  if (isInTelegram && tg?.HapticFeedback) {
     tg.HapticFeedback.notificationOccurred('success');
   }
 
@@ -343,7 +347,7 @@ function shakeElement(elementId) {
   el.classList.add('shake');
   setTimeout(() => el.classList.remove('shake'), 400);
 
-  if (tg?.HapticFeedback) {
+  if (isInTelegram && tg?.HapticFeedback) {
     tg.HapticFeedback.notificationOccurred('error');
   }
 }
@@ -389,15 +393,14 @@ window.addEventListener('DOMContentLoaded', () => {
   prefillFromTelegram();
 
   // 2. Показать нативные кнопки Telegram (или заглушки)
-  if (tg?.MainButton) {
-    // В Telegram: скрываем все fallback кнопки
+  if (isInTelegram) {
+    // В Telegram: скрываем все fallback-кнопки, включаем нативные
     document.querySelectorAll('[id^="fallback-"]')
       .forEach(el => { el.style.display = 'none'; });
-    // Показываем MainButton для первого экрана
     updateMainButton('welcome');
     updateBackButton('welcome');
   } else {
-    // Вне Telegram: показываем заглушку для первого экрана
+    // В браузере: показываем заглушку для первого экрана
     const fb = document.getElementById('fallback-welcome');
     if (fb) fb.style.display = 'block';
   }
@@ -418,7 +421,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
 
       // Тактильный отклик
-      if (tg?.HapticFeedback) {
+      if (isInTelegram && tg?.HapticFeedback) {
         tg.HapticFeedback.selectionChanged();
       }
     });

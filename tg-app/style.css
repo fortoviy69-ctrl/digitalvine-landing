@@ -594,6 +594,32 @@ body {
   transform: none;
 }
 
+/* Нижняя панель с двумя кнопками */
+.bottom-bar {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-secondary {
+  height: 50px;
+  padding: 0 18px;
+  background: var(--bg2);
+  color: var(--text);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.btn-secondary:active { opacity: 0.6; }
+
+/* Когда обе кнопки — основная занимает остаток */
+.bottom-bar .btn-primary { flex: 1; }
+
 
 /* ============================================================
    АНИМАЦИЯ ВСТРЯХИВАНИЯ (для ошибки валидации)
