@@ -31,7 +31,7 @@ export default async function handler(req, res) {
   if (command === '/start') {
     await sendMessage(
       chatId,
-      `Привет, ${firstName}! 👋\n\nЗдесь ты можешь посмотреть услуги и портфолио Светланы Лозы — специалиста по Telegram-ботам, мини-приложениям и автоматизации.\n\nНажми кнопку ниже 👇`,
+      `Привет, ${firstName}! 👋\n\nЗдесь ты можешь посмотреть услуги и портфолио Светланы Лоза — специалиста по Telegram-ботам, мини-приложениям и автоматизации.\n\nНажми кнопку ниже 👇`,
       { reply_markup: OPEN_BUTTON }
     );
   } else if (command === '/help') {
