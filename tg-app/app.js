@@ -8,8 +8,7 @@
 
 'use strict';
 
-// Замени на username своего бота (без @)
-const BOT_USERNAME = 'YOUR_BOT_USERNAME';
+const BOT_USERNAME = 'digital_vine_bot';
 
 // --- Инициализация Telegram SDK ---
 const tg = window.Telegram?.WebApp ?? null;
@@ -458,6 +457,30 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 // ============================================================
+// ПОДЕЛИТЬСЯ С ДРУГОМ
+// ============================================================
+
+function shareBot() {
+  const text = 'Нашла крутого специалиста по Telegram-ботам и автоматизации — смотри!';
+  const url  = `https://t.me/${BOT_USERNAME}`;
+
+  if (isInTelegram && tg?.openTelegramLink) {
+    tg.openTelegramLink(
+      `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`
+    );
+    if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+  } else if (navigator.share) {
+    navigator.share({ title: 'DigitalVine', text, url });
+  } else {
+    window.open(
+      `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+      '_blank'
+    );
+  }
+}
+
+
+// ============================================================
 // ОФФЕР-МОДАЛКА — показываем один раз при первом открытии
 // ============================================================
 
@@ -509,5 +532,6 @@ window.App = {
   goTo,
   goBack,
   nextFromTask,
-  submitForm
+  submitForm,
+  shareBot
 };
