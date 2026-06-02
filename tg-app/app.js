@@ -10,6 +10,9 @@
 
 const BOT_USERNAME = 'digital_vine_bot';
 
+// Конфиг загруженного специалиста (null = ещё не загружен)
+let specialistConfig = null;
+
 // --- Инициализация Telegram SDK ---
 const tg = window.Telegram?.WebApp ?? null;
 
@@ -264,7 +267,7 @@ function onTaskInput() {
 /**
  * Валидация и отправка формы.
  */
-function submitForm() {
+async function submitForm() {
   const nameEl    = document.getElementById('name-input');
   const contactEl = document.getElementById('contact-input');
 
@@ -279,9 +282,7 @@ function submitForm() {
   }
 
   state.name    = name;
-  state.contact = contact || state.tgUser?.username
-    ? `@${state.tgUser.username}`
-    : '—';
+  state.contact = contact || (state.tgUser?.username ? `@${state.tgUser.username}` : '—');
 
   // Показываем индикатор загрузки
   if (isInTelegram && tg?.MainButton) {
@@ -290,42 +291,43 @@ function submitForm() {
     tg.MainButton.disable();
   }
 
-  // Имитируем задержку (реально sendData — мгновенный)
-  setTimeout(() => {
-    sendApplication();
-  }, 700);
+  await sendApplication();
 }
 
 /**
- * Формируем данные и отправляем в бот.
+ * Отправляем заявку в базу и уведомляем специалиста.
  */
-function sendApplication() {
-  const payload = JSON.stringify({
-    name:             state.name,
-    task:             state.task,
-    contact:          state.contact,
-    telegram_username: state.tgUser?.username ? `@${state.tgUser.username}` : '—',
-    telegram_id:      state.tgUser?.id ?? null,
-    source:           'mini_app_digitalvine'
-  });
+async function sendApplication() {
+  const username = specialistConfig?.specialist?.username || 'svetlana_loza';
 
-  if (isInTelegram && tg?.sendData) {
-    // Отправка в Telegram-бот без HTTP-сервера
-    tg.sendData(payload);
-  } else {
-    // Режим разработки — выводим в консоль
-    console.log('📬 Заявка (dev mode):', JSON.parse(payload));
+  try {
+    await fetch('/api/lead', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        specialist_username: username,
+        name:                state.name,
+        task:                state.task,
+        contact:             state.contact,
+        client_telegram_id:  state.tgUser?.id ?? null,
+        telegram_username:   state.tgUser?.username ? `@${state.tgUser.username}` : '—'
+      })
+    });
+  } catch (_) {
+    console.error('Lead save failed');
   }
 
-  // Вибрация успеха
+  if (isInTelegram && tg?.MainButton) {
+    tg.MainButton.hideProgress();
+    tg.MainButton.hide();
+  }
+
   if (isInTelegram && tg?.HapticFeedback) {
     tg.HapticFeedback.notificationOccurred('success');
   }
 
-  // Переходим на экран успеха
   goTo('success');
 
-  // Запускаем анимацию галочки с небольшой задержкой
   setTimeout(() => {
     const circle = document.getElementById('success-circle');
     if (circle) circle.classList.add('animate');
@@ -353,6 +355,49 @@ function shakeElement(elementId) {
     tg.HapticFeedback.notificationOccurred('error');
   }
 }
+
+// ============================================================
+// ЗАГРУЗКА КОНФИГА СПЕЦИАЛИСТА
+// ============================================================
+
+async function loadSpecialistConfig() {
+  const u = new URLSearchParams(window.location.search).get('u') || 'svetlana_loza';
+  try {
+    const res = await fetch(`/api/config?u=${encodeURIComponent(u)}`);
+    if (res.ok) {
+      specialistConfig = await res.json();
+      applySpecialistConfig(specialistConfig);
+    }
+  } catch (_) { /* оставляем хардкодные значения по умолчанию */ }
+}
+
+function applySpecialistConfig(config) {
+  const s = config?.specialist;
+  if (!s) return;
+
+  if (s.photo_url) {
+    const img = document.getElementById('avatar-img');
+    if (img) img.src = s.photo_url;
+  }
+
+  if (s.theme?.brand_name) {
+    const badge = document.getElementById('brand-name');
+    if (badge) badge.textContent = `🌿 ${s.theme.brand_name}`;
+  }
+
+  const t = s.theme || {};
+  const r = document.documentElement;
+  if (t.accent)       r.style.setProperty('--acc',      t.accent);
+  if (t.accent_light) r.style.setProperty('--acc-l',    t.accent_light);
+  if (t.accent_soft)  r.style.setProperty('--acc-soft', t.accent_soft);
+  if (t.accent_mid)   r.style.setProperty('--acc-mid',  t.accent_mid);
+
+  if (s.display_name) {
+    const nameEl = document.getElementById('success-name');
+    if (nameEl) nameEl.textContent = s.display_name.split(' ')[0];
+  }
+}
+
 
 /**
  * Предзаполняем поля данными из Telegram.
@@ -389,7 +434,10 @@ function prefillFromTelegram() {
 // ИНИЦИАЛИЗАЦИЯ ПОСЛЕ ЗАГРУЗКИ DOM
 // ============================================================
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+
+  // 0. Загрузить конфиг специалиста (тема, фото, имя)
+  await loadSpecialistConfig();
 
   // 1. Предзаполнить данными Telegram
   prefillFromTelegram();

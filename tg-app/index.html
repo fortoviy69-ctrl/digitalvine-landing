@@ -28,14 +28,15 @@
         <div class="welcome-hero">
           <div class="avatar" id="avatar">
             <img
+              id="avatar-img"
               src="photo1.png"
               alt="Светлана Лоза"
               onload="this.parentElement.classList.add('avatar--loaded')"
               onerror="this.style.display='none'"
             >
-            <span class="avatar__initials">СЛ</span>
+            <span class="avatar__initials" id="avatar-initials">СЛ</span>
           </div>
-          <span class="brand-badge">🌿 DigitalVine</span>
+          <span class="brand-badge" id="brand-name">🌿 DigitalVine</span>
         </div>
 
         <!-- Приветственный текст -->
@@ -206,7 +207,7 @@
 
         <h2 class="success-title">Заявка отправлена!</h2>
         <p class="success-subtitle">
-          Светлана ответит в течение<br>
+          <span id="success-name">Светлана</span> ответит в течение<br>
           <strong>2 часов</strong> в этом чате
         </p>
 
