@@ -323,6 +323,7 @@
     .res { font-size: 13px; color: var(--grn); display: flex; align-items: center; gap: 7px; }
     .res::before { content: '↑'; font-weight: 700; }
     .res.dn::before { content: '↓'; }
+    .res.ok::before { content: '✓'; }
     .prt-note { text-align: center; margin-top: 36px; }
     .prt-note p { color: var(--muted); font-size: 15px; margin-bottom: 14px; }
 
@@ -641,7 +642,7 @@
       <p class="h-sub">
         Telegram-боты, мини-приложения, ИИ-агенты и сайты —
         чтобы вы тратили время на клиентов, а не на повторяющиеся задачи.
-        Готово за 5–14 дней.
+        Сроки и стоимость фиксирую до начала работы.
       </p>
       <div class="h-btns">
         <a href="#contact" class="btn btn-pri">Обсудить мою задачу →</a>
@@ -649,8 +650,8 @@
       </div>
       <div class="h-trust">
         <span>Первая консультация бесплатно</span>
-        <span>Отвечаю в течение 2 часов</span>
-        <span>Работаю по договору</span>
+        <span>Отвечаю в течение дня</span>
+        <span>Условия — письменно, в ТЗ</span>
       </div>
     </div>
   </div>
@@ -661,20 +662,20 @@
   <div class="wrap">
     <div class="nums-g">
       <div class="a" data-cnt>
-        <div class="num-val" data-to="10" data-sfx="+">0</div>
-        <div class="num-lbl">проектов запущено</div>
+        <div class="num-val" data-to="4" data-sfx="">0</div>
+        <div class="num-lbl">направления: боты, Mini App, автоматизация, сайты</div>
       </div>
       <div class="a d1" data-cnt>
-        <div class="num-val" data-to="14" data-sfx=" дн">0</div>
-        <div class="num-lbl">максимальный срок</div>
+        <div class="num-val" data-to="30" data-sfx=" мин">0</div>
+        <div class="num-lbl">бесплатный созвон перед началом</div>
       </div>
       <div class="a d2" data-cnt>
-        <div class="num-val" data-to="0" data-sfx="">0</div>
-        <div class="num-lbl">пропущенных дедлайнов</div>
+        <div class="num-val" data-to="2" data-sfx="">0</div>
+        <div class="num-lbl">раунда правок включены в стоимость</div>
       </div>
       <div class="a d3" data-cnt>
-        <div class="num-val" data-to="24" data-sfx="/7">0</div>
-        <div class="num-lbl">работают боты после сдачи</div>
+        <div class="num-val" data-to="14" data-sfx=" дн">0</div>
+        <div class="num-lbl">поддержки после сдачи</div>
       </div>
     </div>
   </div>
@@ -777,45 +778,36 @@
   <div class="wrap">
     <div class="lbl a">Мои проекты</div>
     <h2 class="sec-title a d1">Работы в деле</h2>
-    <p class="sec-sub a d2">Реальные задачи и реальные результаты.</p>
+    <p class="sec-sub a d2">Что я уже сделала сама. Это мои собственные проекты: я показываю, как работаю.</p>
     <div class="prt-g">
-      <div class="prt-c a">
-        <div class="prt-img">🤖<span class="prt-badge">Telegram-бот</span></div>
+      <div class="prt-c a ">
+        <div class="prt-img">📱<span class="prt-badge">Telegram Mini App</span></div>
         <div class="prt-body">
-          <h3>FAQ-бот для онлайн-школы</h3>
-          <p>Бот автоматически отвечает на 20 частых вопросов о курсах, расписании и оплате — освободил 1,5 часа ежедневной работы администратора.</p>
-          <div class="prt-res">
-            <span class="res dn">Время на ответы: с 1,5 ч/день до 15 мин</span>
-            <span class="res">Охват: 300+ обращений в первый месяц</span>
-          </div>
+          <h3>Приём заявок внутри Telegram</h3>
+          <p>Мини-приложение DigitalVine: клиент за два шага выбирает тип задачи, описывает её и оставляет контакт. Заявка уходит владельцу.</p>
+          <div class="prt-res"><span class="res ok">Два шага вместо анкеты</span><span class="res ok">Работает прямо в Telegram, без установки</span></div>
         </div>
       </div>
       <div class="prt-c a d1">
-        <div class="prt-img">📅<span class="prt-badge">Mini App</span></div>
+        <div class="prt-img">🌐<span class="prt-badge">Лендинг</span></div>
         <div class="prt-body">
-          <h3>Запись в салон красоты</h3>
-          <p>Мини-приложение внутри Telegram для записи к мастерам. Клиент выбирает мастера, услугу и время — без звонков и переписки.</p>
-          <div class="prt-res">
-            <span class="res dn">Звонков для записи: −80%</span>
-            <span class="res">Повторных записей через бот: +45%</span>
-          </div>
+          <h3>Сайт DigitalVine (эта страница)</h3>
+          <p>Одностраничный сайт с услугами, процессом работы, FAQ и формой заявки. Адаптивный, с анимацией и подключённой формой.</p>
+          <div class="prt-res"><span class="res ok">Адаптивная вёрстка под телефон</span><span class="res ok">Опубликован на Vercel, код на GitHub</span></div>
         </div>
       </div>
       <div class="prt-c a d2">
-        <div class="prt-img">🌐<span class="prt-badge">Лендинг</span></div>
+        <div class="prt-img">🪪<span class="prt-badge">Визитка</span></div>
         <div class="prt-body">
-          <h3>Лендинг для фитнес-тренера</h3>
-          <p>Одностраничный сайт с услугами, программами тренировок, отзывами и формой записи на пробное занятие. Адаптивный и быстрый.</p>
-          <div class="prt-res">
-            <span class="res">Заявок с сайта в первый месяц: 23</span>
-            <span class="res">PageSpeed: 98/100</span>
-          </div>
+          <h3>Персональная визитка</h3>
+          <p>Короткая страница-визитка: кто я, чем занимаюсь и как связаться.</p>
+          <div class="prt-res"><span class="res ok">Лаконичная страница</span><span class="res ok">Код открыт на GitHub</span></div>
         </div>
       </div>
     </div>
     <div class="prt-note a">
-      <p>Хотите увидеть проект для вашей сферы?</p>
-      <a href="#contact" class="btn btn-out">Написать и спросить →</a>
+      <p>Платных проектов пока нет — поэтому я беру первых клиентов на специальных условиях. Хотите стать одним из них?</p>
+      <a href="#contact" class="btn btn-out">Обсудить задачу →</a>
     </div>
   </div>
 </section>
@@ -853,7 +845,7 @@
         <p class="a d2">Мне важно говорить с вами на понятном языке. Вам не нужно разбираться как это устроено внутри — вы просто пользуетесь результатом.</p>
         <div class="facts">
           <div class="fact a d2"><div class="fact-ico">🎓</div><div class="fact-t"><strong>Учусь у практиков</strong> — внедряю актуальные инструменты 2025–2026</div></div>
-          <div class="fact a d3"><div class="fact-ico">🤝</div><div class="fact-t"><strong>Работаю по договору</strong> с фиксированной стоимостью — без сюрпризов</div></div>
+          <div class="fact a d3"><div class="fact-ico">🤝</div><div class="fact-t"><strong>Фиксирую условия письменно</strong> — задачу, срок и стоимость согласуем до начала работы</div></div>
           <div class="fact a d4"><div class="fact-ico">💬</div><div class="fact-t"><strong>Объясняю каждый шаг</strong> понятным языком — вы всегда в курсе проекта</div></div>
         </div>
       </div>
@@ -864,38 +856,12 @@
 <!-- REVIEWS -->
 <section id="reviews">
   <div class="wrap">
-    <div class="lbl a">Отзывы</div>
-    <h2 class="sec-title a d1">Что говорят клиенты</h2>
-    <div class="rev-g" style="margin-top:48px">
-      <div class="rev-c a">
-        <div class="rev-stars">★★★★★</div>
-        <p class="rev-txt">«До работы со Светланой я тратила полтора часа в день на ответы в Telegram — одни и те же вопросы по кругу. Теперь бот справляется с 80% из них сам. Клиенты даже довольны — отвечает мгновенно в любое время.»</p>
-        <div class="rev-who">
-          <div class="rev-ava">А</div>
-          <div><div class="rev-name">Анна К.</div><div class="rev-role">Владелица студии растяжки</div></div>
-        </div>
-      </div>
-      <div class="rev-c a d1">
-        <div class="rev-stars">★★★★★</div>
-        <p class="rev-txt">«Светлана сделала лендинг за 8 дней. Объясняла каждый шаг, была на связи. Главное — показала как редактировать самой. Теперь не завишу ни от кого.»</p>
-        <div class="rev-who">
-          <div class="rev-ava">М</div>
-          <div><div class="rev-name">Мария Л.</div><div class="rev-role">Основатель онлайн-школы</div></div>
-        </div>
-      </div>
-      <div class="rev-c a d2">
-        <div class="rev-stars">★★★★★</div>
-        <p class="rev-txt">«Автоматизировала мой приём заявок — теперь всё летит в таблицу само и я получаю уведомление в Telegram. Сделала за 3 дня. Просто и без лишних слов.»</p>
-        <div class="rev-who">
-          <div class="rev-ava">Е</div>
-          <div><div class="rev-name">Елена В.</div><div class="rev-role">Фитнес-тренер</div></div>
-        </div>
-      </div>
-    </div>
+    <div class="lbl a">Первые клиенты</div>
+    <h2 class="sec-title a d1">Первые 2–3 проекта — по стартовым ценам</h2>
+    <p class="sec-sub a d2">Я только начинаю и не буду придумывать отзывы. Вместо этого предлагаю честный обмен: вы получаете результат по сниженной цене, а я прошу отзыв, если работа вам понравится.</p>
     <div class="rev-banner a">
-      <strong>Проект только стартует</strong> — здесь скоро появятся отзывы первых клиентов.
-      Готова взять 2–3 проекта по сниженной цене в обмен на честный отзыв.
-      <a href="#contact"> Напишите мне →</a>
+      <strong>Стартовые цены:</strong> автоматизация от 2 000 ₽, бот от 4 000 ₽, лендинг от 5 000 ₽, мини-приложение от 12 000 ₽. <strong>Что входит:</strong> созвон, ТЗ с фиксированной ценой, работа с показом промежуточного результата, 2 раунда правок и 14 дней поддержки. Если результат вас не устроит, вы не обязаны оставлять отзыв.
+      <a href="#contact"> Написать мне →</a>
     </div>
   </div>
 </section>
@@ -908,7 +874,7 @@
     <div class="faq-wrap">
       <div class="faq-it a">
         <button class="faq-q">Сколько стоят ваши услуги?<span class="faq-arr">▾</span></button>
-        <div class="faq-ans"><div class="faq-ans-in">Стоимость зависит от задачи. Telegram-бот — от 15 000 ₽, мини-приложение — от 35 000 ₽, сайт — от 20 000 ₽, автоматизация — от 8 000 ₽. Точную стоимость обсуждаем на бесплатном созвоне — без давления и обязательств.</div></div>
+        <div class="faq-ans"><div class="faq-ans-in">Стоимость зависит от задачи. Для первых 2–3 клиентов действуют стартовые цены: автоматизация — 2 000–5 000 ₽, простой Telegram-бот — 4 000–8 000 ₽, лендинг — 5 000–10 000 ₽, мини-приложение — 12 000–20 000 ₽. Обычные цены после первых проектов будут выше. Точную стоимость фиксируем в ТЗ на бесплатном созвоне — без давления и обязательств.</div></div>
       </div>
       <div class="faq-it a d1">
         <button class="faq-q">Как долго делается проект?<span class="faq-arr">▾</span></button>
@@ -949,7 +915,7 @@
       <div class="con-l">
         <div class="lbl a">Контакты</div>
         <h2 class="sec-title a d1">Готовы начать?</h2>
-        <p class="a d2">Расскажите о своей задаче — отвечу в течение 2 часов и предложу решение на бесплатном созвоне.</p>
+        <p class="a d2">Расскажите о своей задаче — отвечу в течение дня и предложу решение на бесплатном созвоне.</p>
         <div class="con-ways">
           <a href="https://t.me/svetlanaloza" class="con-way a d2">
             <div class="way-ico ico-tg">✈️</div>
@@ -984,7 +950,7 @@
         </form>
         <div class="f-ok" id="fOk">
           <h3>Спасибо! 🎉</h3>
-          <p>Заявка отправлена. Отвечу в течение 2 часов в рабочее время.</p>
+          <p>Заявка отправлена. Отвечу в течение рабочего дня.</p>
         </div>
       </div>
     </div>
