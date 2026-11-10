@@ -37,7 +37,9 @@ const DEF={jars:[
 {id:'piggy',name:'Копилка',pct:10,kw:['копилк','накоплен','отложи']},
 {id:'gift',name:'Подарки',pct:5,kw:['подар','цвет','днюх','рожден']}],
 plans:{},sources:[{id:'s1',name:'Зарплата',planned:0},{id:'s2',name:'Фриланс',planned:0}],tx:[]};
-let S=JSON.parse(localStorage.getItem('jars')||'null')||DEF;if(!S.plans)S.plans={};
+let S=JSON.parse(localStorage.getItem('jars')||'null')||DEF;if(!S.plans)S.plans={};if(!S.items)S.items=[];
+if(!S.mig){for(const mk in S.plans)for(const id in S.plans[mk])if(+S.plans[mk][id]>0)S.items.push({id:'m'+mk+id,month:mk,name:'План (введён ранее)',amount:+S.plans[mk][id],jar:id});S.mig=1;localStorage.setItem('jars',JSON.stringify(S))}
+const EX={learn:['репетитор','урок','занят'],kids:['репетитор ребен','подгузник','игрушк'],must:['аренд','страховк','телефон','свет','газ','вода'],rest:['театр','экскурс','отель'],misc:['лекарств','аптек','ремонт','стрижк'],gift:['подарок']};
 const save=()=>localStorage.setItem('jars',JSON.stringify(S));
 let tab='home',mo=new Date();mo.setDate(1);
 const ym=d=>d.slice(0,7),cur=()=>mo.getFullYear()+'-'+String(mo.getMonth()+1).padStart(2,'0');
@@ -50,12 +52,12 @@ function stats(){const m=cur(),r={};S.jars.forEach(j=>r[j.id]={bal:0,pin:0,out:0
  else if(r[t.jar]){r[t.jar].bal-=t.amount;if(ym(t.date)==m)r[t.jar].out+=t.amount}});
  const pl=S.sources.reduce((a,s)=>a+(+s.planned||0),0);S.jars.forEach(j=>r[j.id].plan=planFor(j.id));
  r.plannedIncome=pl;return r}
-function planFor(id){const ks=Object.keys(S.plans).filter(k=>k<=cur()&&S.plans[k][id]!=null).sort();return ks.length?+S.plans[ks[ks.length-1]][id]:0}
+function planFor(id){return S.items.filter(i=>i.month==cur()&&i.jar==id).reduce((a,i)=>a+i.amount,0)}
 function setPlan(id,v){(S.plans[cur()]=S.plans[cur()]||{})[id]=+v||0;save();render()}
 function light(x){const lim=x.pin,u=lim>0?x.out/lim:(x.out>0?9:0),c=u>1?'r':u>=0.8?'o':'';return {u,c,t:lim>0?Math.round(u*100)+'%':(x.out>0?'нет дохода':'0%')}}
 function render(){$('#mname').textContent=mo.toLocaleDateString('ru-RU',{month:'long',year:'numeric'});
- $('#nav').innerHTML=[['home','🏠','Главная'],['pf','📊','План/факт'],['ops','🧾','Операции'],['set','⚙️','Настройки']].map(([k,i,t])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';render()">${i}<br>${t}</button>`).join('');
- $('#v').innerHTML=({home,pf,ops,set})[tab]()}
+ $('#nav').innerHTML=[['home','🏠','Главная'],['plan','📝','План'],['pf','📊','План/факт'],['ops','🧾','Операции'],['set','⚙️','Настройки']].map(([k,i,t])=>`<button class="${tab==k?'on':''}" onclick="tab='${k}';render()">${i}<br>${t}</button>`).join('');
+ $('#v').innerHTML=({home,plan,pf,ops,set})[tab]()}
 function home(){const s=stats();let av=0,sv=0;S.jars.forEach(j=>j.id=='piggy'?sv+=s[j.id].bal:av+=s[j.id].bal);
  const inc=S.tx.filter(t=>t.type=='in'&&ym(t.date)==cur()).reduce((a,t)=>a+t.amount,0);
  return `<div class="card"><div class="lbl">Доступно к трате</div><div class="big ${av<0?'neg':'pos'}">${f(av)}</div>
@@ -64,13 +66,25 @@ function home(){const s=stats();let av=0,sv=0;S.jars.forEach(j=>j.id=='piggy'?sv
  <div class="small" style="margin:0 14px">Остатки переносятся на следующий месяц. Нажми на кувшин — увидишь операции.</div>`}
 function pf(){const s=stats();let t={p:0,a:0,o:0};
  const rows=S.jars.map(j=>{const x=s[j.id],l=light(x);t.p+=x.plan;t.a+=x.pin;t.o+=x.out;const bal=x.plan-x.out;return `<div class="row" style="flex-wrap:wrap"><div style="flex:1;min-width:140px"><b>${esc(j.name)}</b> <span class="tl ${l.c}">${l.t} лимита</span><div class="small">лимит по % (${j.pct}%): ${f(x.pin)}</div><div class="bar"><i style="width:${Math.min(100,l.u*100)}%;${l.c=='r'?'background:#c0392b':l.c=='o'?'background:#e69100':''}"></i></div></div>
- <div style="text-align:right"><div class="small">план, ₽</div><input class="pl" type="number" inputmode="decimal" value="${x.plan||''}" placeholder="0" onchange="setPlan('${j.id}',this.value)"></div>
+ <div style="text-align:right"><div class="small">план</div><b>${f(x.plan)}</b></div>
  <div style="text-align:right;min-width:78px"><div class="small">факт</div><b>${f(x.out)}</b></div>
  <div style="text-align:right;min-width:78px"><div class="small">баланс</div>${x.plan?`<b class="${bal<0?'neg':'pos'}">${f(bal)}</b>`:'<b class="small">нет плана</b>'}</div></div>`}).join('');
  const bySrc=S.sources.map(src=>{const a=S.tx.filter(t=>t.type=='in'&&t.source==src.id&&ym(t.date)==cur()).reduce((q,t)=>q+t.amount,0);return `<div class="row"><span>${esc(src.name)}</span><span class="small">план ${f(src.planned||0)}</span><b>${f(a)}</b></div>`}).join('');
  const tb=t.p-t.o;
  return `<div class="card"><b>Доходы: план и факт</b>${bySrc}<div class="row"><b>Итого</b><span class="small">план ${f(s.plannedIncome)}</span><b>${f(t.a)}</b></div></div><div class="card"><b>Расходы: план, факт, баланс</b>${rows}<div class="row"><b>Итого</b><span class="small">план ${f(t.p)}</span><span>факт <b>${f(t.o)}</b></span><b class="${tb<0?'neg':'pos'}">${f(tb)}</b></div></div>
- <div class="small" style="margin:0 14px">План расходов вводишь сама в рублях, он копируется на следующие месяцы. Светофор: лимит категории = процент от дохода, реально поступившего за месяц. До 80% зелёный, 80–100% оранжевый, выше 100% красный.</div>`}
+ <div class="small" style="margin:0 14px">План собирается на вкладке «План» из твоих пунктов. Светофор: лимит категории = процент от дохода, реально поступившего за месяц. До 80% зелёный, 80–100% оранжевый, выше 100% красный.</div>`}
+function guess(l){l=l.toLowerCase();return (S.jars.find(j=>(j.kw||[]).concat(EX[j.id]||[]).some(k=>l.includes(k)))||S.jars.find(j=>j.id=='misc')||S.jars[0]).id}
+function addItem(){const n=$('#pn').value.trim(),a=+$('#pa').value;if(!n||!(a>0)){alert('Напиши, что планируешь, и сумму');return}
+ S.items.push({id:'i'+Date.now(),month:cur(),name:n,amount:a,jar:guess(n)});save();render()}
+function itC(id,v){S.items.find(i=>i.id==id).jar=v;save();render()}
+function itD(id){S.items=S.items.filter(i=>i.id!=id);save();render()}
+function itA(id,v){S.items.find(i=>i.id==id).amount=+v||0;save();render()}
+function copyPrev(){const d=new Date(mo);d.setMonth(d.getMonth()-1);const pm=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');const l=S.items.filter(i=>i.month==pm);if(!l.length){alert('В прошлом месяце плана нет');return}if(!confirm('Скопировать '+l.length+' пунктов из прошлого месяца?'))return;l.forEach((i,k)=>S.items.push({...i,id:'i'+Date.now()+k,month:cur()}));save();render()}
+function plan(){const l=S.items.filter(i=>i.month==cur()),tot=l.reduce((a,i)=>a+i.amount,0);
+ const g=S.jars.map(j=>{const it=l.filter(i=>i.jar==j.id);if(!it.length)return '';return `<div class="card"><div class="row"><b>${esc(j.name)}</b><b>${f(it.reduce((a,i)=>a+i.amount,0))}</b></div>${it.map(i=>`<div class="row"><span style="flex:1">${esc(i.name)}</span><input class="pl" type="number" value="${i.amount}" onchange="itA('${i.id}',this.value)"><select style="width:110px" onchange="itC('${i.id}',this.value)">${S.jars.map(q=>`<option value="${q.id}" ${q.id==i.jar?'selected':''}>${esc(q.name)}</option>`).join('')}</select><button class="x" onclick="itD('${i.id}')">✕</button></div>`).join('')}</div>`}).join('');
+ return `<div class="card"><b>Что планирую в этом месяце</b><div class="small">Впиши пункт и сумму, например «репетитор» 8000. Категорию подберу сам, её можно поменять.</div>
+ <input id="pn" placeholder="Что купить / оплатить" style="margin-top:8px"><div class="two" style="margin-top:8px"><input id="pa" type="number" inputmode="decimal" placeholder="Сумма, ₽"><button class="btn" onclick="addItem()">Добавить</button></div>
+ <button class="btn g" style="margin-top:8px" onclick="copyPrev()">Скопировать из прошлого месяца</button></div>${g}<div class="card"><div class="row"><b>Всего запланировано</b><b>${f(tot)}</b></div></div>`}
 function opRow(t){const sg=t.type=='in'?'+':'−';return `<div class="row"><div style="flex:1"><b class="${t.type=='in'?'pos':''}">${sg}${f(t.amount)}</b> ${t.type=='in'?esc((S.sources.find(x=>x.id==t.source)||{}).name||''):esc(jar(t.jar).name)}<div class="small">${t.date} ${esc(t.note)}</div></div><button class="x" onclick="del('${t.id}')">✕</button></div>`}
 function ops(){const l=S.tx.filter(t=>ym(t.date)==cur()).sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));return `<div class="card">${l.map(opRow).join('')||'<div class="lbl">Операций за месяц нет. Напиши или скажи внизу.</div>'}</div>`}
 function openJar(id){const l=S.tx.filter(t=>t.type=='out'&&t.jar==id).sort((a,b)=>b.date.localeCompare(a.date));$('#m').innerHTML=`<div class="modal" onclick="if(event.target==this)m.innerHTML=''"><div><b>${esc(jar(id).name)}</b>${l.map(opRow).join('')||'<div class="lbl">Расходов пока нет</div>'}<button class="btn g" onclick="m.innerHTML=''">Закрыть</button></div></div>`}
