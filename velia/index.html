@@ -14,7 +14,7 @@ header .lg{font-size:20px}header .lg .word{font-size:1em}
 .col.a{background:#1a1f1e url(img/collection_a.jpg) center/cover no-repeat!important}.col.b{background:#1a1f1e url(img/collection_b.jpg) center/cover no-repeat!important}.col .door{display:none}.col .name{background:rgba(240,242,240,.92);color:#101614}
 #sl{display:none;position:absolute!important;inset:0;overflow:hidden;z-index:0!important}.slides i{position:absolute;inset:-5%;background-size:cover;background-position:center;opacity:0;animation:sl 18s infinite}.slides i:nth-child(2){animation-delay:6s}.slides i:nth-child(3){animation-delay:12s}@keyframes sl{0%{opacity:0;transform:scale(1)}8%{opacity:1}33%{opacity:1}41%{opacity:0;transform:scale(1.12)}100%{opacity:0}}
 .hero video{pointer-events:none}
-@media(max-width:800px),(pointer:coarse){.hero::after{background:rgba(8,14,12,.6)}.hero video{display:none!important}#sl{display:block}header .lg{gap:8px;font-size:17px}.drum h2{font-size:10px;padding:0 20px;top:30px}}
+@media(max-width:800px),(pointer:coarse){.hero::after{background:rgba(8,14,12,.68)}.hero video{display:none!important}#sl{display:block}header .lg{gap:8px;font-size:17px}.drum h2{font-size:10px;padding:0 20px;top:22px;z-index:4;text-shadow:0 0 12px #0c100f,0 0 12px #0c100f}#dw{top:90px!important}}
 /* заставка */
 #splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:out .9s ease 3.6s forwards}
 
@@ -68,7 +68,7 @@ footer{padding:50px 5vw;text-align:center;color:var(--soft);font-size:12px;lette
 @media(max-width:800px){.dc{flex-basis:17vw}.dc:nth-child(n+5){display:none}}
 </style></head><body>
 <div id="splash" class="grad"><div class="lgw"><span class="lg"><svg viewBox="0 0 30 24" aria-hidden="true"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg><span class="word">Velia</span></span></div><div class="tag">Двери, которые открывают пространство</div></div>
-<section class="hero grad" id="hero"><div class="slides" id="sl"><i style="background-image:url(img/collection_b.jpg)"></i><i style="background-image:url(img/collection_a.jpg)"></i><i style="background-image:url(img/door_c3.jpg)"></i></div><video id="hv" muted playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="img/collection_a.jpg"><source src="video/hero.webm" type="video/webm"><source src="video/hero.mp4" type="video/mp4"></video>
+<section class="hero grad" id="hero"><div class="slides" id="sl"><i style="background-image:url(img/collection_b.jpg)"></i><i style="background-image:url(img/collection_a.jpg)"></i><i style="background-image:url(img/collection_a.jpg);background-position:30% center"></i></div><video id="hv" muted playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="img/collection_a.jpg"><source src="video/hero.webm" type="video/webm"><source src="video/hero.mp4" type="video/mp4"></video>
 <header><nav><a href="#">Главная</a><a href="#cols">Каталог</a><a href="#">Компания</a><a href="#">Стать дилером</a><a href="#">Контакты</a></nav>
 <span class="lg"><svg viewBox="0 0 30 24" aria-hidden="true"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg><span class="word">Velia</span></span>
 <div class="ic"><a href="#" aria-label="Поиск"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></a><a href="#" aria-label="Личный кабинет"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg></a></div></header>
@@ -88,7 +88,8 @@ function frame(){if(!hover)t+=0.35;const y=window.scrollY;
 belts.forEach(o=>{const half=o.b.scrollHeight/2;let off=((y*o.sp+t*o.sp*1.6)%half+half)%half;o.b.style.transform='translateY('+(o.dir>0?-off:off-half)+'px)'});requestAnimationFrame(frame)}
 frame()})();
 
-(function(){const h=document.getElementById('hero'),v=document.getElementById('hv');let d=false;const go=()=>{if(!d){d=true;h.classList.add('go')}};
+(function(){const sp=document.getElementById("splash");let seen=0;try{seen=sessionStorage.getItem("vs")}catch(e){}if(seen){sp.style.display="none"}else{try{sessionStorage.setItem("vs","1")}catch(e){}}
+const h=document.getElementById('hero'),v=document.getElementById('hv');let d=false;const go=()=>{if(!d){d=true;h.classList.add('go')}};
 const mob=matchMedia('(max-width:800px),(pointer:coarse)').matches;
-if(mob){setTimeout(go,5600)}else{setTimeout(()=>{v.play().catch(go)},3800);v.addEventListener('ended',go);v.addEventListener('error',go);setTimeout(go,16000)}})();
+if(mob){setTimeout(go,seen?800:5600)}else{setTimeout(()=>{v.play().catch(go)},seen?300:3800);v.addEventListener('ended',go);v.addEventListener('error',go);setTimeout(go,16000)}})();
 </script></body></html>
