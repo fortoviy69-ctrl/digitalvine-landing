@@ -7,11 +7,14 @@ html{scroll-behavior:smooth}
 body{background:#0c100f;color:var(--fg);font-family:"Helvetica Neue",Arial,"Liberation Sans",sans-serif}
 .grad{background:linear-gradient(180deg,var(--bg1) 0%,var(--bg2) 62%,var(--bg3) 100%)}
 .word{font-weight:300;letter-spacing:.38em;text-transform:uppercase;padding-left:.38em}
-.lg{display:inline-flex;align-items:center;gap:14px;justify-content:center}.lg svg{height:1.1em;width:auto}
+.lg{display:inline-flex;align-items:center;gap:14px;justify-content:center}.lg svg{height:1.1em;width:1.4em;flex:none}
 #splash .lgw{display:contents}#splash .lg{font-size:clamp(34px,6vw,72px);opacity:0;animation:in 1.4s ease .3s forwards}#splash .lg .word{font-size:1em;opacity:1;animation:none}
 header .lg{font-size:20px}header .lg .word{font-size:1em}
 .hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}.hero::after{content:"";position:absolute;inset:0;background:rgba(8,14,12,.35)}.hero>div:not(.scroll){position:relative;z-index:2}.hero h1,.hero p{animation:none}.hero.go h1,.hero.go p{animation:in 1.4s ease forwards}.hero.go p{animation-delay:.5s}
 .col.a{background:#1a1f1e url(img/collection_a.jpg) center/cover no-repeat!important}.col.b{background:#1a1f1e url(img/collection_b.jpg) center/cover no-repeat!important}.col .door{display:none}.col .name{background:rgba(240,242,240,.92);color:#101614}
+#sl{display:none;position:absolute!important;inset:0;overflow:hidden;z-index:0!important}.slides i{position:absolute;inset:-5%;background-size:cover;background-position:center;opacity:0;animation:sl 18s infinite}.slides i:nth-child(2){animation-delay:6s}.slides i:nth-child(3){animation-delay:12s}@keyframes sl{0%{opacity:0;transform:scale(1)}8%{opacity:1}33%{opacity:1}41%{opacity:0;transform:scale(1.12)}100%{opacity:0}}
+.hero video{pointer-events:none}
+@media(max-width:800px),(pointer:coarse){.hero::after{background:rgba(8,14,12,.6)}.hero video{display:none!important}#sl{display:block}header .lg{gap:8px;font-size:17px}.drum h2{font-size:10px;padding:0 20px;top:30px}}
 /* заставка */
 #splash{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:out .9s ease 3.6s forwards}
 
@@ -65,7 +68,7 @@ footer{padding:50px 5vw;text-align:center;color:var(--soft);font-size:12px;lette
 @media(max-width:800px){.dc{flex-basis:17vw}.dc:nth-child(n+5){display:none}}
 </style></head><body>
 <div id="splash" class="grad"><div class="lgw"><span class="lg"><svg viewBox="0 0 30 24" aria-hidden="true"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg><span class="word">Velia</span></span></div><div class="tag">Двери, которые открывают пространство</div></div>
-<section class="hero grad" id="hero"><video id="hv" muted playsinline preload="auto" poster="img/collection_a.jpg"><source src="video/hero.webm" type="video/webm"><source src="video/hero.mp4" type="video/mp4"></video>
+<section class="hero grad" id="hero"><div class="slides" id="sl"><i style="background-image:url(img/collection_b.jpg)"></i><i style="background-image:url(img/collection_a.jpg)"></i><i style="background-image:url(img/door_c3.jpg)"></i></div><video id="hv" muted playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="img/collection_a.jpg"><source src="video/hero.webm" type="video/webm"><source src="video/hero.mp4" type="video/mp4"></video>
 <header><nav><a href="#">Главная</a><a href="#cols">Каталог</a><a href="#">Компания</a><a href="#">Стать дилером</a><a href="#">Контакты</a></nav>
 <span class="lg"><svg viewBox="0 0 30 24" aria-hidden="true"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg><span class="word">Velia</span></span>
 <div class="ic"><a href="#" aria-label="Поиск"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></a><a href="#" aria-label="Личный кабинет"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg></a></div></header>
@@ -86,5 +89,6 @@ belts.forEach(o=>{const half=o.b.scrollHeight/2;let off=((y*o.sp+t*o.sp*1.6)%hal
 frame()})();
 
 (function(){const h=document.getElementById('hero'),v=document.getElementById('hv');let d=false;const go=()=>{if(!d){d=true;h.classList.add('go')}};
-setTimeout(()=>{v.play().catch(()=>{});},3800);v.addEventListener('ended',go);setTimeout(go,16000)})();
+const mob=matchMedia('(max-width:800px),(pointer:coarse)').matches;
+if(mob){setTimeout(go,5600)}else{setTimeout(()=>{v.play().catch(go)},3800);v.addEventListener('ended',go);v.addEventListener('error',go);setTimeout(go,16000)}})();
 </script></body></html>
