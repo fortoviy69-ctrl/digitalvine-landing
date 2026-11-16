@@ -68,19 +68,19 @@ html{scroll-behavior:smooth}section,footer{scroll-margin-top:0}.drum h2{position
 @media(max-width:800px){.dc{flex-basis:17vw}.dc:nth-child(n+5){display:none}}
 </style></head><body>
 <div id="splash" class="grad"><div class="lgw"><span class="lg"><svg viewBox="0 0 30 24" aria-hidden="true"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg><span class="word">Velia</span></span></div><div class="tag">Двери, которые открывают пространство</div></div>
-<section class="hero grad" id="hero"><div class="slides" id="sl"><i style="background-image:url(img/collection_b.jpg)"></i><i style="background-image:url(img/collection_a.jpg)"></i><i style="background-image:url(img/collection_a.jpg);background-position:30% center"></i></div><video id="hv" muted playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="img/collection_a.jpg"><source src="video/hero.webm" type="video/webm"><source src="video/hero.mp4" type="video/mp4"></video>
+<section class="hero grad" id="hero"><div class="slides" id="sl"><i style="background-image:url(img/collection_b.jpg)"></i><i style="background-image:url(img/collection_a.jpg)"></i><i style="background-image:url(img/slide_corridor.jpg)"></i></div><video id="hv" muted playsinline webkit-playsinline x5-playsinline disablepictureinpicture disableremoteplayback controlslist="nodownload nofullscreen noremoteplayback" preload="auto" poster="img/collection_a.jpg"><source src="video/hero.webm" type="video/webm"><source src="video/hero.mp4" type="video/mp4"></video>
 <header><nav><a href="#hero">Главная</a><a href="#drum">Каталог</a><a href="#cols">Компания</a><a href="#contacts">Стать дилером</a><a href="#contacts">Контакты</a></nav>
 <span class="lg"><svg viewBox="0 0 30 24" aria-hidden="true"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg><span class="word">Velia</span></span>
 <div class="ic"><a href="#" aria-label="Поиск"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></a><a href="#" aria-label="Личный кабинет"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg></a></div></header>
 <div><h1>Дверь — это начало<br>любого пространства</h1><p>Коллекции 2026</p></div><div class="scroll"></div></section>
 <section class="cols" id="cols"><div class="col a"><div class="door"></div><div class="name"><span>Aria</span></div></div><div class="col b"><div class="door"></div><div class="name"><span>Nord</span></div></div></section>
 <section class="drum grad" id="drum"><h2>Модели — прокрутите, двери меняются</h2><div class="dw" id="dw"></div></section>
-<footer id="contacts">Velia doors · учебный демо-концепт, вымышленный бренд<br><span style="font-size:10px;opacity:.7;letter-spacing:.12em">Фото: Max Vakhtbovych, Lisa Anna — Pexels. Видео и логотип созданы для демо.</span></footer>
+<footer id="contacts">Velia doors · учебный демо-концепт, вымышленный бренд<br><span style="font-size:10px;opacity:.7;letter-spacing:.12em">Фото: Max Vakhtbovych, Lisa Anna, Andrea De Santis, Алан Албегов — Pexels. Видео и логотип созданы для демо.</span></footer>
 <script>
-(function(){const names=['Aria 01','Nord 02','Onyx 03','Sand 04','Pine 05'],cls=['c1','c2','c3','c4','c5'];
+(function(){const names=['Aria 01','Nord 02','Onyx 03','Sand 04','Pine 05','Lumen 06','Classic 07'],cls=['c1','c2','c3','c4','c5','c6','c7'];
 const dw=document.getElementById('dw'),belts=[];
 for(let i=0;i<6;i++){const c=document.createElement('div');c.className='dc';const b=document.createElement('div');b.className='db';
-const list=[];for(let k=0;k<6;k++)list.push((k+i*2)%5);const all=list.concat(list);
+const list=[];for(let k=0;k<6;k++)list.push((k+i*2)%7);const all=list.concat(list);
 all.forEach(n=>{const a=document.createElement('a');a.href='model.html?m='+n;a.className='dd '+cls[n];a.style.backgroundImage='url(img/door_'+cls[n]+'.jpg)';a.innerHTML='<span>'+names[n]+'</span>';b.appendChild(a)});
 c.appendChild(b);dw.appendChild(c);belts.push({b,dir:i%2?-1:1,sp:0.25+i*0.09})}
 let t=0,hover=false;dw.addEventListener('mouseenter',()=>hover=true);dw.addEventListener('mouseleave',()=>hover=false);

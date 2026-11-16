@@ -13,14 +13,16 @@ p{color:#cfdcd6;line-height:1.7;max-width:460px}table{margin:26px 0;border-colla
 </style></head><body>
 <header><a href="index.html#drum">← К моделям</a><span class="lg"><svg viewBox="0 0 30 24"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg>Velia</span><span></span></header>
 <main><div class="ph"><img id="im" alt=""></div><div><div class="sm" id="co"></div><h1 id="nm"></h1><p id="ds"></p>
-<table id="tb"></table><a class="btn" href="index.html#drum">Узнать цену у дилера</a><div class="n">Учебный демо-концепт, вымышленный бренд. Характеристики условные. Фото: Max Vakhtbovych, Lisa Anna — Pexels.</div></div></main>
+<table id="tb"></table><a class="btn" href="index.html#drum">Узнать цену у дилера</a><div class="n">Учебный демо-концепт, вымышленный бренд. Характеристики условные. Фото: Max Vakhtbovych, Lisa Anna, Andrea De Santis, Алан Албегов — Pexels.</div></div></main>
 <script>
 const M=[['Aria 01','Коллекция Aria','Спокойный серый цвет с четырьмя филёнками. Классическая форма для светлых и тёплых интерьеров.','Эмаль, филёнки','2000 × 800 мм'],
 ['Nord 02','Коллекция Nord','Гладкое полотно с рисунком тёплого ореха в раме из того же дерева. Лаконичная дверь без лишнего.','Шпон ореха','2000 × 800 мм'],
 ['Onyx 03','Коллекция Nord','Глубокий тёмный цвет венге и пять горизонтальных филёнок. Выразительная дверь для современных пространств.','Шпон венге, филёнки','2100 × 900 мм'],
 ['Sand 04','Коллекция Aria','Тёплое светлое дерево с горизонтальными планками. Делает прихожую уютной и по-домашнему светлой.','Шпон тика','2000 × 800 мм'],
-['Pine 05','Коллекция Nord','Орех с вертикальной вставкой матового стекла: пропускает свет и не теряет приватности.','Шпон ореха, матовое стекло','2000 × 800 мм']];
-const k=Math.min(4,Math.max(0,+new URLSearchParams(location.search).get('m')||0)),d=M[k];
+['Pine 05','Коллекция Nord','Орех с вертикальной вставкой матового стекла: пропускает свет и не теряет приватности.','Шпон ореха, матовое стекло','2000 × 800 мм'],
+['Lumen 06','Коллекция Nord','Двустворчатая дверь с матовым стеклом в тёмной раме. Мягкий рассеянный свет и длинные латунные ручки для просторных комнат.','Матовое стекло, тёмная рама','2000 × 1400 мм','латунь'],
+['Classic 07','Коллекция Aria','Двустворчатая дверь из тёмного дуба с наличниками и стёклами с ромбовидным узором. Классика для тёплых интерьеров.','Шпон дуба, узорное стекло','2100 × 1200 мм']];
+const k=Math.min(6,Math.max(0,+new URLSearchParams(location.search).get('m')||0)),d=M[k];
 document.title='VELIA — '+d[0];im.src='img/door_c'+(k+1)+'.jpg';im.alt=d[0];co.textContent=d[1];nm.textContent=d[0];ds.textContent=d[2];
-tb.innerHTML='<tr><td>Покрытие</td><td>'+d[3]+'</td></tr><tr><td>Размер</td><td>'+d[4]+'</td></tr><tr><td>Ручка</td><td>хром</td></tr>';
+tb.innerHTML='<tr><td>Покрытие</td><td>'+d[3]+'</td></tr><tr><td>Размер</td><td>'+d[4]+'</td></tr><tr><td>Ручка</td><td>'+(d[5]||'хром')+'</td></tr>';
 </script></body></html>
