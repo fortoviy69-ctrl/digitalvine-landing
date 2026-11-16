@@ -1,0 +1,26 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VELIA doors — модель</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:linear-gradient(180deg,#101614,#1d3a33 70%,#3b6b5d);min-height:100vh;color:#f2efe9;font-family:"Helvetica Neue",Arial,"Liberation Sans",sans-serif}
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:30px 4vw}header a{color:#f2efe9;text-decoration:none;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.lg{display:inline-flex;align-items:center;gap:14px;font-size:20px;font-weight:300;letter-spacing:.38em;text-transform:uppercase}.lg svg{height:1.1em;width:auto}
+main{display:grid;grid-template-columns:1fr 1fr;gap:6vw;align-items:center;padding:3vh 8vw 8vh;max-width:1300px;margin:auto}
+.ph img{width:100%;max-width:380px;object-fit:cover;display:block;margin:auto;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+.sm{font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:#b9cfc7}h1{font-weight:200;font-size:clamp(38px,5vw,68px);letter-spacing:.12em;margin:14px 0 20px}
+p{color:#cfdcd6;line-height:1.7;max-width:460px}table{margin:26px 0;border-collapse:collapse;font-size:14px}td{padding:9px 28px 9px 0;border-bottom:1px solid rgba(255,255,255,.15)}td:first-child{color:#b9cfc7}
+.btn{display:inline-block;margin-top:8px;padding:14px 30px;border:1px solid #f2efe9;color:#f2efe9;text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase}.btn:hover{background:#f2efe9;color:#101614}
+.n{margin-top:30px;font-size:11px;color:#8fa79e}
+@media(max-width:800px){main{grid-template-columns:1fr;gap:30px}}
+</style></head><body>
+<header><a href="index.html#drum">← К моделям</a><span class="lg"><svg viewBox="0 0 30 24"><g fill="currentColor"><rect x="0" y="4" width="2" height="20"/><rect x="5" y="2" width="2" height="22"/><rect x="10" y="0" width="2" height="24"/><rect x="15" y="0" width="2" height="24"/><rect x="20" y="2" width="2" height="22"/><rect x="25" y="4" width="2" height="20"/></g></svg>Velia</span><span></span></header>
+<main><div class="ph"><img id="im" alt=""></div><div><div class="sm" id="co"></div><h1 id="nm"></h1><p id="ds"></p>
+<table id="tb"></table><a class="btn" href="index.html#drum">Узнать цену у дилера</a><div class="n">Учебный демо-концепт, вымышленный бренд. Характеристики условные. Фото: Max Vakhtbovych, Lisa Anna — Pexels.</div></div></main>
+<script>
+const M=[['Aria 01','Коллекция Aria','Спокойный серый цвет с четырьмя филёнками. Классическая форма для светлых и тёплых интерьеров.','Эмаль, филёнки','2000 × 800 мм'],
+['Nord 02','Коллекция Nord','Гладкое полотно с рисунком тёплого ореха в раме из того же дерева. Лаконичная дверь без лишнего.','Шпон ореха','2000 × 800 мм'],
+['Onyx 03','Коллекция Nord','Глубокий тёмный цвет венге и пять горизонтальных филёнок. Выразительная дверь для современных пространств.','Шпон венге, филёнки','2100 × 900 мм'],
+['Sand 04','Коллекция Aria','Тёплое светлое дерево с горизонтальными планками. Делает прихожую уютной и по-домашнему светлой.','Шпон тика','2000 × 800 мм'],
+['Pine 05','Коллекция Nord','Орех с вертикальной вставкой матового стекла: пропускает свет и не теряет приватности.','Шпон ореха, матовое стекло','2000 × 800 мм']];
+const k=Math.min(4,Math.max(0,+new URLSearchParams(location.search).get('m')||0)),d=M[k];
+document.title='VELIA — '+d[0];im.src='img/door_c'+(k+1)+'.jpg';im.alt=d[0];co.textContent=d[1];nm.textContent=d[0];ds.textContent=d[2];
+tb.innerHTML='<tr><td>Покрытие</td><td>'+d[3]+'</td></tr><tr><td>Размер</td><td>'+d[4]+'</td></tr><tr><td>Ручка</td><td>хром</td></tr>';
+</script></body></html>
