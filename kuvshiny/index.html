@@ -48,7 +48,8 @@ const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 const jar=id=>S.jars.find(j=>j.id==id)||{name:'?'};
 function mv(d){mo.setMonth(mo.getMonth()+d);render()}
 function stats(){const m=cur(),r={};S.jars.forEach(j=>r[j.id]={bal:0,pin:0,out:0,planIn:0});
- S.tx.forEach(t=>{if(t.type=='in'){for(const k in t.alloc){if(!r[k])continue;r[k].bal+=t.alloc[k];if(ym(t.date)==m)r[k].pin+=t.alloc[k]}}
+ const ps=S.jars.reduce((q,j)=>q+(+j.pct||0),0)||1;
+ S.tx.forEach(t=>{if(t.type=='in'){S.jars.forEach(j=>{const v=t.amount*(+j.pct||0)/ps;r[j.id].bal+=v;if(ym(t.date)==m)r[j.id].pin+=v})}
  else if(r[t.jar]){r[t.jar].bal-=t.amount;if(ym(t.date)==m)r[t.jar].out+=t.amount}});
  const pl=S.sources.reduce((a,s)=>a+(+s.planned||0),0);S.jars.forEach(j=>r[j.id].plan=planFor(j.id));
  r.plannedIncome=pl;return r}
@@ -96,7 +97,7 @@ function ops(){const l=S.tx.filter(t=>ym(t.date)==cur()).sort((a,b)=>b.date.loca
 function openJar(id){const l=S.tx.filter(t=>t.type=='out'&&t.jar==id).sort((a,b)=>b.date.localeCompare(a.date));$('#m').innerHTML=`<div class="modal" onclick="if(event.target==this)m.innerHTML=''"><div><b>${esc(jar(id).name)}</b>${l.map(opRow).join('')||'<div class="lbl">Расходов пока нет</div>'}<button class="btn g" onclick="m.innerHTML=''">Закрыть</button></div></div>`}
 function del(id){if(!confirm('Удалить операцию?'))return;S.tx=S.tx.filter(t=>t.id!=id);save();m.innerHTML='';render()}
 function set(){const sum=S.jars.reduce((a,j)=>a+(+j.pct||0),0);
- return `<div class="card"><b>Проценты по кувшинам</b><div class="small">Сумма: <b class="${sum==100?'pos':'neg'}">${sum}%</b> ${sum==100?'':'— должно быть 100'}. Меняются только для новых поступлений.</div>
+ return `<div class="card"><b>Проценты по кувшинам</b><div class="small">Сумма: <b class="${sum==100?'pos':'neg'}">${sum}%</b> ${sum==100?'':'— должно быть 100'}. Меняются сразу для всех поступлений, в том числе уже внесённых.</div>
  ${S.jars.map(j=>`<div class="row"><span>${esc(j.name)}</span><span><input class="pct" type="number" min="0" max="100" value="${j.pct}" onchange="setp('${j.id}',this.value)"> %</span></div>`).join('')}</div>
  <div class="card"><b>Источники дохода</b><div class="small">В поле справа — плановый доход в месяц (для «План»).</div>
  ${S.sources.map(s=>`<div class="row"><input value="${esc(s.name)}" onchange="srcn('${s.id}',this.value)"><input class="pct" style="width:100px" type="number" value="${s.planned||0}" onchange="srcp('${s.id}',this.value)"><button class="x" onclick="srcd('${s.id}')">✕</button></div>`).join('')}
